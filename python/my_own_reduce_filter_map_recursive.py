@@ -2,14 +2,6 @@
 1. implement you own reduce function
 2. implement you own filter and map functions using reduce
 """
-def my_super_reduce(fun, iterable, acum=None):
-    try:
-        i = iterable.pop(0)
-    except IndexError as s:
-        return acum
-    else:
-        acum2 = fun(acum, i)
-        return my_super_reduce(fun, iterable, acum2)
 
 def my_reduce(fun, iterable, acum=None):
     for i in iterable:
@@ -41,7 +33,6 @@ def add_cuadrado(acum, y):
 
 print reduce(add_cuadrado, range(1,10), [])
 print my_reduce(add_cuadrado, range(1,10), [])
-print my_super_reduce(add_cuadrado, range(1,10), [])
 print map(lambda x: x**2, range(1,10))
 print my_map(lambda x: x**2, range(1,10))
 print filter(lambda x: x % 2 == 0, range(1,20))
