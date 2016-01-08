@@ -2,7 +2,6 @@ import asyncio
 import aiohttp
 
 def fetch_page(url, idx):  
-    url = 'https://yahoo.com'
     response = yield from aiohttp.request('GET', url)
 
     if response.status == 200:
@@ -12,7 +11,8 @@ def fetch_page(url, idx):
         print(response.content, response.status)
 
 def main():  
-    url = 'https://yahoo.com'
+    url = 'https://www.infohostal.com'
+
     urls = [url] * 100
 
     coros = []
