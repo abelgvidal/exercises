@@ -6,6 +6,9 @@ def receiver():
         print("Got %s" % n)
 
 def catch_and_increment():
+    """
+    here we see that total is live between calls
+    """
     total = 0
     print("Ready to receive")
     while True:
