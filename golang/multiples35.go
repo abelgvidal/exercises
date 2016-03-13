@@ -15,7 +15,7 @@ func sumList(list []int) int{
 
 
 func main() {
-	const maximo = 1000
+	const maximo = 999
 	var multiples []int
 	
 	for i := 1; i <= maximo; i++ {
