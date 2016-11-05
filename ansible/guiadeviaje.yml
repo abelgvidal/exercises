@@ -1,0 +1,41 @@
+---
+- hosts: webserver
+  become: yes
+  become_user: root
+
+  tasks:
+
+
+  ### GUIADEVIAJE
+
+  - name: install packages for guiadeviaje
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - python
+      - libmysqlclient-dev
+
+  - name: clone guiadeviaje repo
+    git: repo=git@github.com:abelgvidal/jericho.git
+         dest=/var/www/guiadeviaje
+         accept_hostkey=True
+         clone=yes
+         update=yes
+         key_file=/root/.ssh/id_rsa
+         force=yes
+
+  - name: Install requirements for guiadeviaje
+    pip: 
+        requirements: /var/www/guiadeviaje/requirements.txt
+        virtualenv: /var/www/guiadeviaje/.env
+        virtualenv_python: python2.7
+
+  - command: /var/www/guiadeviaje/.env/bin/gunicorn -w 4 jericho:app
+    args:
+        chdir: /var/www/guiadeviaje/
+      
+  handlers:
+    - name: restart php5-fpm
+      service: name=php5-fpm state=restarted
+
+    - name: restart nginx
+      service: name=nginx state=restarted

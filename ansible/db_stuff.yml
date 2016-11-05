@@ -1,0 +1,27 @@
+  - name: Set mysql root Password
+    mysql_user: name=root host=localhost password=mysql0verm0de state=present
+
+  - name: create database sellamara
+    mysql_db: name=sellamara state=present login_user=root login_password=mysql0verm0de
+
+  - name: create database sellamara_wp
+    mysql_db: name=sellamara_wp state=present login_user=root login_password=mysql0verm0de
+
+  - name: Create database user and grant permission in sellamara
+    mysql_user: user=sellamara password=ramaLLase host=localhost priv=sellamara.*:ALL state=present login_user=root login_password=mysql0verm0de
+
+  - name: Create database user and grant permission in sellamara_wp
+    mysql_user: user=sellamara_wp password=ramaLLase host=localhost priv="sellamara_wp.*:ALL" state=present login_user=root login_password=mysql0verm0de
+
+  - name: move db file sellamara
+    copy: src=assets/sellamara.sql dest=/tmp/sellamara.sql
+
+  - name: move db file sellamara_wp
+    copy: src=assets/sellamara_wp.sql dest=/tmp/sellamara_wp.sql
+
+  - name: export database sellamara
+    mysql_db: db=sellamara state=import target=/tmp/sellamara.sql login_user=root login_password=mysql0verm0de
+
+  - name: export database sellamara_wp
+    mysql_db: db=sellamara_wp state=import target=/tmp/sellamara_wp.sql login_user=root login_password=mysql0verm0de
+  
