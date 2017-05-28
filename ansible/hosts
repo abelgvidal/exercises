@@ -1,8 +1,0 @@
-[guiadeviaje]
-139.162.180.244 ansible_ssh_user=root 
-
-[bicei]
-172.104.151.201 ansible_ssh_user=root
-
-
-
