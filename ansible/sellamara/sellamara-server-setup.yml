@@ -1,0 +1,96 @@
+---
+- hosts: webservers
+  become: yes
+  become_user: root
+
+  tasks:
+
+  - name: install packages
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - git
+      - htop
+      - nginx
+      - php5-cli
+      - php5-curl
+      - php5-fpm
+      - php5-intl
+      - php5-json
+      - php5-mysql
+      - php5-gd
+      - postfix
+      - python-mysqldb
+      - python-virtualenv
+      - python3
+      - python3-pip
+      - gunicorn
+
+  - name: ensure php5-fpm cgi.fix_pathinfo=0
+    lineinfile: dest=/etc/php5/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+    notify:
+      - restart php5-fpm
+      - restart nginx
+
+  - name: Configure default nginx site
+    template: src=templates/nginx_default.conf dest=/etc/nginx/sites-enabled/default
+    notify:
+      - restart php5-fpm
+      - restart nginx
+
+
+#### GUIADEPSICOLOGIA
+
+  - name: create dir for guiadepsicologia site
+    file: path=/var/www/guiadepsicologia state=directory owner=www-data
+
+  - name: Configure guiadepsicologia nginx site
+    template: src=templates/nginx_guiadepsicologia.conf dest=/etc/nginx/sites-enabled/guiadepsicologia
+    notify:
+      - restart nginx  
+
+  - name: upload guiadepsicologia static site
+    unarchive: src=assets/guiadepsicologia.zip dest=/var/www/guiadepsicologia creates=/var/www/guiadepsicologia/estilos/default.css
+
+ ####  SELLAMARA
+
+  - name: create dir for sellamara site
+    file: path=/var/www/sellamara state=directory owner=www-data
+
+  - name: Configure sellamara nginx site
+    template: src=templates/nginx_sellamara.conf dest=/etc/nginx/sites-enabled/sellamara
+    notify:
+      - restart nginx  
+
+  - name: copy key for github
+    copy: src=templates/id_rsa.github
+          dest=/root/.ssh/id_rsa.github
+
+  - name: Correct SSH deploy key permissions
+    file: dest=/root/.ssh/id_rsa.github mode=0600
+        
+  - name: clone repo
+    git: repo=git@github.com:abelgvidal/sellamara.git
+         dest=/var/www/sellamara
+         accept_hostkey=True
+         clone=yes
+         update=yes
+         key_file=/root/.ssh/id_rsa
+
+  - name: create cache dir for sellamara
+    file: path=/var/tmp/sellamara.com state=directory owner=www-data
+
+  - name: make www-data owner of all files of sellamara
+    file: path=/var/www/sellamara state=directory owner=www-data recurse=yes
+
+  - name: copy new settings php
+    copy: src=templates/www.conf dest=/etc/php5/fpm/pool.d/www.conf
+    notify:
+       - restart php5-fpm
+
+
+
+
+
+
+
+  
