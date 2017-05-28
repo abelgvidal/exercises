@@ -1,5 +1,5 @@
 ---
-- hosts: webserver
+- hosts: guiadeviaje 
   become: yes
   become_user: root
 
