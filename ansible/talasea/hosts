@@ -1,4 +1,4 @@
 [webservers]
-172.104.151.201 ansible_ssh_user=root letsencrypt_email=me@example.com domain_name=www.talasea.com
+172.104.151.201 ansible_ssh_user=root letsencrypt_email=me@example.com domain_name=www.bicei.com
 
 
