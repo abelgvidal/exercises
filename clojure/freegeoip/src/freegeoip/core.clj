@@ -9,7 +9,6 @@
   (let [api-call (str "http://freegeoip.net/json/" ip)
         response (client/get api-call {:as :json})
         country (:country_code (:body response))]
-    (println (keys response))
     [ip country]))
 
 (defn -main
