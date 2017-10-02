@@ -1,5 +1,3 @@
-(require '[clj-http.client :as client])
-
 (ns freegeoip.core
   (:require [clj-http.client :as client])  
   (:gen-class))
