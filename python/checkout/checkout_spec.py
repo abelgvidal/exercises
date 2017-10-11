@@ -1,4 +1,4 @@
-from expects import *
+from expects import expect, equal
 from checkout import PricingRules, Checkout
 
 
