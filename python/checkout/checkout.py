@@ -1,12 +1,10 @@
-class Product():
+from rules import ItemRule
+
+
+class Item():
     code = None
     name = None
     price = None
-
-
-class PricingRules():
-    pass
-
 
 class Checkout():
     
@@ -14,3 +12,5 @@ class Checkout():
         self.pricing_rules = pricing_rules 
 
     pricing_rules = None
+
+
