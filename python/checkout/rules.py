@@ -1,74 +1,50 @@
-from abc import ABCMeta, abstractmethod
-from itertools import islice
-import csv
+import json
+from money import Money
+from utils import grouper
 
+#
+# pricerule methods have this params (price_info, units)
+#  returns unit_price
+#
 
-class Rule:
-    __metaclass__ = ABCMeta
+unit = lambda price_info, units: price_info["unitPrice"]
 
-    @abstractmethod
-    def get_unit_price(count): raise NotImplementedError    
-
-
-class ItemRule(Rule):
-    price = 0
-    count = 0
-    price = 0
-    strict_count = False
-
-    def __init__(self, price, discount_count,
-                 discount_price, strict_count):
-        self.price = price
-        self.discount_count = discount_count
-        self.discount_price = discount_price
-        self.strict_count = strict_count
+def xfory(price_info, units):
+    total = 0
+    x = price_info.get('x')
+    y = price_info.get('y')
+    price = price_info.get('unitPrice')
     
-    def get_unit_price(self, count):
-        if not self.discount_count:
-            return self.price
-
-        total = 0
+    for group in grouper(x, range(0, units)):
+        has_discount = len(group) == x
+        per_unit= price if not has_discount else y / x * price 
+        total = total + (per_unit * len(group))
         
-        if self.strict_count:
-            groups = grouper(self.discount_count, range(0, count))
-            for group in groups:
-                has_discount = len(group) == self.discount_count
-                per_unit= self.price if not has_discount else self.discount_price
-                total = total + (per_unit * len(group))
-        else:
-            has_discount = count >= self.discount_count
-            per_unit= self.price if not has_discount else self.discount_price
-            total = per_unit * count
-
-        return total / count
-
+    return total / units
     
+def bulk(price_info, units):
+    has_discount = price_info["bulkNumber"] <= units
+    price_key = "bulkPrice" if has_discount else "unitPrice"
+    return price_info[price_key]
+
+
 class PricingRules:
-    """ item_rules is a dict of item_code -> ItemRule """
-    item_rules = {}
+    rules = {}
+    types = {
+        "unit": unit,
+        "xfory": xfory,
+        "bulk": bulk,
+    }
 
     def __init__(self, rules_file):
-        with open(rules_file, 'r') as csvfile:
-            reader = csv.reader(csvfile, delimiter=",")
-            next(reader) # skip header
-            for row in filter(None, reader):
-                code, _, price, disc_price, disc_count, strict = row
-                self.item_rules[code] = ItemRule(float(price), int(disc_count), float(disc_price), bool(int(strict)))
+        with open('price_list.json') as json_data:
+            items = json.load(json_data)["items"]
+            self.rules = {i['code']: i for i in items}
 
-
-    def get_item_unit_price(self, item_code, count):
-        rule = self.item_rules.get(item_code, None)
-        if not rule:
-            raise ValueError
+    def _get_price_func(self, _type):
+        return self.types[_type]
             
-        return rule.get_unit_price(count);
-
-
-def grouper(n, iterable):
-    it = iter(iterable)
-    while True:
-        chunk = tuple(islice(it, n))
-        if not chunk:
-            return
-        yield chunk        
-
+    def get_unit_price(self, item_code, count):
+        rule = self.rules.get(item_code)
+        price_f = self._get_price_func(rule['type'])
+        return Money(price_f(rule, count), 'EUR')

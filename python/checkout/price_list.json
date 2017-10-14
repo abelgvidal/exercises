@@ -1,0 +1,22 @@
+{
+	"items": [{
+		"code": "VOUCHER",
+		"name": "Gift Card",
+		"type": "xfory",
+		"x": 2,
+		"y": 1,
+		"unitPrice": 5
+	}, {
+		"code": "TSHIRT",
+		"name": "Summer T-Shirt",
+		"type": "bulk",
+		"bulkNumber": 3,
+		"bulkPrice": 19,
+		"unitPrice": 20
+	}, {
+		"code": "PANTS",
+		"name": "Summer Pants",
+		"type": "unit",
+		"unitPrice": 7.50
+	}]
+}
