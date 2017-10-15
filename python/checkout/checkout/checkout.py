@@ -32,7 +32,7 @@ class Checkout():
         return result
         
         
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     def new_checkout(items):
         pricing_rules = PricingRules('price_list.json')
         co = Checkout(pricing_rules)
