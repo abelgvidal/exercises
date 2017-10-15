@@ -15,14 +15,14 @@ def xfory(price_info, units):
     x = price_info.get('x')
     y = price_info.get('y')
     price = price_info.get('unitPrice')
-    
+
     for group in grouper(x, range(0, units)):
         has_discount = len(group) == x
-        per_unit= price if not has_discount else y / x * price 
+        per_unit = price if not has_discount else y / x * price
         total = total + (per_unit * len(group))
-        
+
     return total / units
-    
+
 def bulk(price_info, units):
     has_discount = price_info["bulkNumber"] <= units
     price_key = "bulkPrice" if has_discount else "unitPrice"
@@ -48,7 +48,7 @@ class PricingRules:
 
     def _get_price_func(self, _type):
         return self.types[_type]
-            
+
     def get_unit_price(self, item_code, count):
         rule = self.rules.get(item_code)
         price_f = self._get_price_func(rule['type'])
