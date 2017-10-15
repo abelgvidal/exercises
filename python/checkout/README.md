@@ -1,7 +1,8 @@
 # Checkout Kata Python
 
 - [Instructions](#instructions)
-- [How to use](#how-to-use-this-solution)
+- [How to use](#how-to-use)
+- [How to extend](#how-to-extend)
 
 ## Instructions
 
@@ -73,3 +74,9 @@ and to see test coverage
 `make coverage`
 
 If you don't use docker, you'll have to install Python >=3.6.1 and create a virtual enviroment `pip install -r requirements` before running Checkout module.
+
+## How to extend
+
+This app has been designed so you can easily extend new price functions 
+if new types of discounts are asked. Just follow the instruccions in the 
+docstring of module `rules`.
