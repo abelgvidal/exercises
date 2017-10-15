@@ -2,10 +2,6 @@ import json
 from money import Money
 from utils import grouper
 
-#
-# pricerule methods have this params (price_info, units)
-#  returns unit_price
-#
 
 unit = lambda price_info, units: price_info["unitPrice"]
 

@@ -1,5 +1,7 @@
 FROM alpine:3.6
 
+ENV PYTHONPATH /app/checkout
+
 RUN apk add --no-cache python3 && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
