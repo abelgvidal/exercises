@@ -2,6 +2,11 @@ import json
 from money import Money
 from utils import grouper
 
+#
+# define here new price functions
+# input: price_info, units
+# output: unit_price
+#
 
 unit = lambda price_info, units: price_info["unitPrice"]
 
@@ -22,6 +27,10 @@ def bulk(price_info, units):
     has_discount = price_info["bulkNumber"] <= units
     price_key = "bulkPrice" if has_discount else "unitPrice"
     return price_info[price_key]
+
+#
+# end of price functions
+#
 
 
 class PricingRules:
