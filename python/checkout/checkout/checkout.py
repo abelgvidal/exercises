@@ -1,9 +1,14 @@
+"""Checkout can scan items in any order and calculate the total price
+If you run this module you'll get a demo for some examples
+"""
 from money import Money
 from rules import PricingRules
 
 
 class Checkout():
-
+    """Scan items in any order and calculate the total price
+    applying the rules for prices
+    """
     items = None
     pricing_rules = None
 
@@ -14,12 +19,14 @@ class Checkout():
         self.items = {}
 
     def scan(self, item):
+        """Scan one item at a time"""
         if item not in self.items:
             self.items[item] = 1
         else:
             self.items[item] += 1
 
     def total(self):
+        """How much should i pay"""
         result = Money('0', 'EUR')
 
         for item, units in self.items.items():

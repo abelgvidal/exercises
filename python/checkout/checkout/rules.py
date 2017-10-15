@@ -1,16 +1,26 @@
+"""
+This module contains rules for prices and the object PricingRules.
+
+If you need to add new price functions:
+ - add at least one item which this function applies to in the json
+   file naming its function with the key "type" and other neccesary 
+   attributes like code, name and unit_price. more attributes can also 
+   be included if needed
+ - define below the funcion with the same name which receives:
+   - input: price_info, units
+   - output: unit_price
+ - add a new element to the PricingRules.rules dictionary
+ - et voilá!
+"""
 import json
 from money import Money
 from utils import grouper
 
 #
 # define here new price functions
-# input: price_info, units
-# output: unit_price
 #
-
-unit = lambda price_info, units: price_info["unitPrice"]
-
 def xfory(price_info, units):
+    """ function to discount per groups. if you pay Y you get X """
     total = 0
     x = price_info.get('x')
     y = price_info.get('y')
@@ -24,9 +34,14 @@ def xfory(price_info, units):
     return total / units
 
 def bulk(price_info, units):
+    """ function for bulk discuount. if you buy more than X units 
+        then you pay less per unit """
     has_discount = price_info["bulkNumber"] <= units
     price_key = "bulkPrice" if has_discount else "unitPrice"
     return price_info[price_key]
+
+# no discount rule
+unit = lambda price_info, units: price_info["unitPrice"]
 
 #
 # end of price functions
@@ -34,6 +49,11 @@ def bulk(price_info, units):
 
 
 class PricingRules:
+    """
+    The object PricingRules takes a list for rules for prices 
+    from a json file and matches them with price functions 
+    so it can calculate any price for any number of items
+    """
     rules = {}
     types = {
         "unit": unit,
@@ -50,6 +70,7 @@ class PricingRules:
         return self.types[_type]
 
     def get_unit_price(self, item_code, count):
+        """ how much will I pay for X items for this type? """
         rule = self.rules.get(item_code)
         price_f = self._get_price_func(rule['type'])
         return Money(price_f(rule, count), 'EUR')
