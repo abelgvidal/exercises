@@ -2,7 +2,7 @@ from expects import expect, equal, raise_error
 from checkout import Checkout
 from rules import PricingRules
 
-pricing_rules = PricingRules("inventory.csv")
+pricing_rules = PricingRules('price_list.json')
 
 with description('testing checkout'):
 
@@ -31,7 +31,7 @@ with description('testing checkout'):
 
         
     with it('testing checkout construct receives pricing_rule object'):
-        pricing_rules = PricingRules("inventory.csv")
+        pricing_rules = PricingRules('price_list.json')
         checkout = Checkout(pricing_rules)
         expect(checkout.pricing_rules).to(equal(pricing_rules))
 

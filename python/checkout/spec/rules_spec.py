@@ -6,7 +6,7 @@ with description('testing rules'):
 
 
     with before.each:
-        self.pricing_rules = PricingRules("inventory.csv")
+        self.pricing_rules = PricingRules('price_list.json')
     
     with it('discounted item as 2x1 is no discounted with 1 item'):
         unit_price = self.pricing_rules.get_unit_price('VOUCHER', 1)

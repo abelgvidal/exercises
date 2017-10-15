@@ -42,7 +42,7 @@ class PricingRules:
     }
 
     def __init__(self, rules_file):
-        with open('price_list.json') as json_data:
+        with open(rules_file) as json_data:
             items = json.load(json_data)["items"]
             self.rules = {i['code']: i for i in items}
 
