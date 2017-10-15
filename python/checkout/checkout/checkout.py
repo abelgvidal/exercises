@@ -32,6 +32,32 @@ class Checkout():
         return result
         
         
+if __name__ == "__main__":
+    def new_checkout(items):
+        pricing_rules = PricingRules('price_list.json')
+        co = Checkout(pricing_rules)
+        [co.scan(item) for item in items]
+        return co.total()
+
+    print('\nCheckout demo!')
+    print("*" * 40, '\n')
+    
+    items = ['VOUCHER','TSHIRT','PANTS']
+    print('Items: %s' % ' '.join(items))
+    print('Total: %s\n' % new_checkout(items))
+    
+    items = ['VOUCHER', 'TSHIRT', 'VOUCHER']
+    print('Items: %s' % ' '.join(items))
+    print('Total: %s\n' % new_checkout(items))
+
+    items = ['TSHIRT', 'TSHIRT', 'TSHIRT', 'VOUCHER', 'TSHIRT']
+    print('Items: %s' % ' '.join(items))
+    print('Total: %s\n' % new_checkout(items))
+
+    items = ['VOUCHER', 'TSHIRT', 'VOUCHER',
+             'VOUCHER', 'PANTS', 'TSHIRT', 'TSHIRT']
+    print('Items: %s' % ' '.join(items))
+    print('Total: %s\n' % new_checkout(items))
 
 
 
