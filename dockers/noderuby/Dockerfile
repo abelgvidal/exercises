@@ -63,7 +63,6 @@ RUN set -ex \
 		--enable-shared \
 	&& make -j "$(nproc)" \
 	&& make install \
-#	&& apt-get purge -y --auto-remove $buildDeps \
 	&& cd / \
 	&& rm -r /usr/src/ruby \
 	&& gem update --system "$RUBYGEMS_VERSION" \
@@ -89,5 +88,6 @@ WORKDIR /app
 RUN bundle install && rm /app/Gemfile
 RUN npm -g install && rm /app/package.json
 
+RUN apt-get purge -y --auto-remove $buildDeps
 
 CMD ["irb"]
