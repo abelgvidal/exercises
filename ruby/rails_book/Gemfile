@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+
+gem 'rails', '4.2.10'
+gem 'rake', '12.3.0'
+gem 'mysql2', '0.4.9'
+gem 'debug_inspector', '0.0.3'
+
+group :development do
+  gem 'binding_of_caller', '0.7.3'
+  gem 'byebug', '= 9.1.0'
+end
