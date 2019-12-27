@@ -1,0 +1,19 @@
+#! /bin/bash
+
+#generally speaking, you should only set LC_ALL and a fallback (LANG)
+
+echo $LANG
+
+echo $LC_ALL
+
+echo $LC_COLLATE
+
+echo "{$LC_C-TYPE}"
+
+echo $LC_MESSAGES
+
+echo $LC_MONETARY
+
+echo $LC_NUMERIC
+
+echo $LC_TIME
